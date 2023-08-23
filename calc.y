@@ -2,12 +2,12 @@
     #include <stdio.h>
 %}
 
-%token plus minus num equal div mult
+%token plus minus num equal divi mult
 
 %start input
 
 //%left plus minus
-%left Div mult plus minus
+%left divi mult plus minus
 
 %%
 input : 
@@ -20,12 +20,12 @@ exp : num
         | exp plus exp {$$ = $1 + $3;}
         | exp minus exp {$$ = $1 - $3;}
         | exp mult exp {$$ = $1 * $3;}
-        | exp Div exp {
+        | exp divi exp {
                        if($3 == 0)
                        {printf("cannot divide\n");}
                        else
                        {
-                        $$ = $1/$3
+                        $$ = $1/$3;
                        }
                       }
 

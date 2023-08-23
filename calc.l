@@ -11,20 +11,19 @@
 "-" { return minus; }
 "*" { return mult; }
 "/" { return divi; }
+"=" {return equal;}
 
-[0-9]+ { yylval = atoi(yytext); return num; }
+[0-9]+ { yylval = atoi(yytext); 
+         return num; }
 
-[ \t] { /* ignore whitespace */ }
-. { printf("wrong input %c\n", *yytext); }
-%%
-int main()
-{
-int tok;
-while(tok = yylex()) {
-printf("%d", tok);
-if(tok == num) printf(" = %d\n", yylval);
-else printf("\n");
-}
-return 0;
+[ \t] { }
+
+. { printf("wrong input %c\n", *yytext); 
+    exit(0);}
+
+ %%
+
+ int yywrap(){
+    return 1;
 }
 
