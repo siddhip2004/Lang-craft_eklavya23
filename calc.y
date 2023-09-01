@@ -11,7 +11,7 @@
 
 %%
 input : 
-        | input line {printf("result is %d", $2);}
+        | input line {printf("result is %d", $$);}
         ;
 line : equal
         | exp equal
