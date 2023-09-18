@@ -1,6 +1,6 @@
 # Scanning : Crafting Interpreters
 
-### NOTES : 
+### CHP-1 ~ NOTES : 
 
 * The core of the scanner is the loop.
 
