@@ -4,7 +4,7 @@
 #include <string>
 #include <iterator>     // std::advance
 #include <list>         // std::list
-#include <cctype>
+#include <cstring>
 
 
 using namespace std;
@@ -40,9 +40,7 @@ class Scanner
 
 }
 
-string source;
-
-vector<string> tokens;
+vector<Token> tokens;
 
  int start = 0;
  int current = 0;
@@ -73,6 +71,8 @@ void scanToken() {
       case '+': addToken("PLUS"); break;
       case ';': addToken("SEMICOLON"); break;
       case '*': addToken("STAR"); break;
+      case '/': addToken("SLASH"); break;
+      //case '[0-9]+': addToken("NUMBER");break;
      
       case '!':
         addToken(match('=') ? "BANG_EQUAL" : "BANG");
@@ -266,7 +266,7 @@ bool isDigit(char c)
 
 bool isAtEnd()
 {
-    if(current >= strlen(source))
+    if(current >= source.size())
     {
         return current;
     }
@@ -290,11 +290,6 @@ char advance()
 // }
 
 };
-
-int main() {
- 
-    return 0;
-}
 
 
 

@@ -5,7 +5,7 @@
 * Parsing—transmogrifying a sequence of tokens into one of those syntax trees.
 
 * In order to have uniformity in evaluating a parsed tree, **precedence** and **associativity** is introduced:
-  * Precedence determines which operator is evaluated first in an expression containing a mixture of different operators. Precedence rules tell us that we evaluate the / before the - in the above example. Operators with higher precedence are evaluated before operators with lower precedence. Equivalently, higher precedence operators are said to “bind tighter”.
+  * Precedence determines which operator is evaluated first in an expression containing a mixture of different operators. Precedence rules tell us that we evaluate the '/' before the '-' in the above example. Operators with higher precedence are evaluated before operators with lower precedence. Equivalently, higher precedence operators are said to “bind tighter”.
 
   * Associativity determines which operator is evaluated first in a series of the same operator. When an operator is left-associative (think “left-to-right”), operators on the left evaluate before those on the right. Since - is left-associative, this expression.
 
@@ -19,7 +19,7 @@
 
   * Nonterminal:	Call to that rule’s function
   * |:	if or switch statement
-  * Astrick or +	while or for    loop
+  * Astrick or +:	while or for loop
   * ?:	if statement
 
 * Syntax Errors:
