@@ -4,9 +4,9 @@
 #include<list>
 #include<array>
 #include<exception>
-//#include"Token.h"
+#include"Token.h"
 #include"TokenType.h"
-//#include"Stmt.h"
+#include"Stmt.h"
 
 
 using namespace std;
