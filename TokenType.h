@@ -20,8 +20,8 @@ enum TokenType
 
   //KEYWORDS
 
-  AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR,
-  PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
+  AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NULL, OR,
+  PRINT, RETURN, THIS, TRUE,  WHILE,
 
   eof
 };
@@ -36,9 +36,8 @@ string toString(TokenType type)
     "GREATER", "GREATER_EQUAL",
     "LESS", "LESS_EQUAL",
     "IDENTIFIER", "STRING", "NUMBER",
-    "AND", "CLASS", "ELSE", "FALSE", "FUN", "FOR", "IF", "NIL", "OR",
-    "PRINT", "RETURN", "SUPER", "THIS", "TRUE", "VAR", "WHILE",
-    "END_OF_FILE"
+    "AND", "CLASS", "ELSE", "FALSE", "FOR", "IF", "NULL", "OR",
+    "PRINT", "RETURN", "THIS", "TRUE", "WHILE","eof"
   };
 
   return strings[static_cast<int>(type)];

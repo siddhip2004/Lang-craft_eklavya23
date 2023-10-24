@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <map>
@@ -5,73 +7,58 @@
 #include <iterator>     // std::advance
 #include <list>         // std::list
 #include <cstring>
+#include<Token.h>
+#include<Error.h>
+#include <string_view>
+#include <utility>      
 
 
 using namespace std;
 class Scanner
 {
+    int start = 0;
+    int current = 0;
+    int line = 1;
+    string_view source;
+
     public:
-    string source;
-    Scanner(string source) {
-    this->source = source;
-  }
+    
+    Scanner(string_view source) 
+    : source {source}
+    {}
   
   private:
    
-   static  map<string, string> keywords;
-   
-   void initializeKeywords() {
-    keywords["and"] = "AND";
-    keywords["class"] = "CLASS";
-    keywords["else"] = "ELSE";
-    keywords["false"] = "FALSE";
-    keywords["for"] = "FOR";
-    keywords["fun"] = "FUN";
-    keywords["if"] = "IF";
-    keywords["nil"] = "NIL";
-    keywords["or"] = "OR";
-    keywords["print"] = "PRINT";
-    keywords["return"] = "RETURN";
-    keywords["super"] = "SUPER";
-    keywords["this"] = "THIS";
-    keywords["true"] = "TRUE";
-    keywords["var"] = "VAR";
-    keywords["while"] ="WHILE";
+     static const map<string, TokenType> keywords;
+     vector<Token> tokens;
 
-}
-
-vector<Token> tokens;
-
- int start = 0;
- int current = 0;
- int line = 1;
-
-//   List<Token> scanTokens() {
+ 
+  public:
+   vector<Token> scanTokens() {
     while (!isAtEnd()) {
       start = current;
       scanToken();
     }
 
-     tokens.push_back(new Token(EOF, "", null, line));
+     tokens.emplace_back(new Token(eof, "", nullptr, line));
     return tokens;
-  
+   }
 
 //vector<string> :: iterator ptr = tokens.begin();             //no need
-
+private:
 void scanToken() {
     char c = advance();
     switch (c) {
-      case '(': addToken("LEFT_PAREN"); break;
-      case ')': addToken("RIGHT_PAREN"); break;
-      case '{': addToken("LEFT_BRACE"); break;
-      case '}': addToken("RIGHT_BRACE"); break;
-      case ',': addToken("COMMA"); break;
-      case '.': addToken("DOT"); break;
-      case '-': addToken("MINUS"); break;
-      case '+': addToken("PLUS"); break;
-      case ';': addToken("SEMICOLON"); break;
-      case '*': addToken("STAR"); break;
-      case '/': addToken("SLASH"); break;
+      case '(': addToken(LEFT_PAREN); break;
+      case ')': addToken(RIGHT_PAREN); break;
+      case '{': addToken(LEFT_BRACE); break;
+      case '}': addToken(RIGHT_BRACE); break;
+      case ',': addToken(COMMA); break;
+      case '.': addToken(DOT); break;
+      case '-': addToken(MINUS); break;
+      case '+': addToken(PLUS); break;
+      //case ';': addToken("SEMICOLON"); break;
+      case '*': addToken(STAR); break;
       //case '[0-9]+': addToken("NUMBER");break;
      
       case '!':
@@ -87,8 +74,8 @@ void scanToken() {
         addToken(match('=') ? "GREATER_EQUAL" : "GREATER");
         break;
        
-        case '/':
-        
+      case '/':
+
             if(match('/'))
             {
                 while(peek() != '\n' && !isAtEnd())
@@ -114,7 +101,7 @@ void scanToken() {
         line++;
         break;
        
-        case '"': sstring(); break;
+        case '"': string(); break;
        
         default:
         if (isDigit(c)) {
@@ -123,9 +110,11 @@ void scanToken() {
         } else if (isAlpha(c)) {
           identifier();
 
-         } //else {
-        //   Lox.error(line, "Unexpected character.");
-        // }
+         } 
+         else 
+         {
+           error(line, "Unexpected character.");
+         }
 
         break;
     }
@@ -138,16 +127,18 @@ void identifier()
                advance();
            }
            
-           string text;
-               text = source.substr(start, current);
+           std::string text = std::string{ source.substr(start, current-start)};
+            
+            TokenType type;
+               auto match = keywords.find(text);
+            if (match == keywords.end()) 
+            {
+              type = IDENTIFIER;
+            } else 
+            {        
+              type = match->second;
+            }
 
-               //TokenType type = keywords.get(text);
-
-            //   if(type == null)
-            //   {
-            //       type = IDENTIFIER;
-            //   }
-            //addToken(type);
 }
 
 void number()
@@ -167,12 +158,12 @@ void number()
             }
     }
     
-    else {
-    addToken(NUMBER, stod(source.substr(start, current)));
-    }
+    
+    addToken(NUMBER,  stod(std::string{source.substr(start, current-start)}));
+    
 }
 
-void sstring()
+void string()
 {
     while(peek() != '"' && !isAtEnd())
     {
@@ -180,21 +171,23 @@ void sstring()
         {
             line++;
         }
+        
+        else{
         advance();
+        }
     }
     
-    // if (isAtEnd()) {
-    //   Lox.error(line, "Unterminated string.");
-    //   return;
-    // }
+     if (isAtEnd()) {
+       error(line, "Unterminated string.");
+       return;
+     }
     
     else 
     {
         advance();
     
-        string value;
-        value = source.substr(start + 1, current -1);
-        addToken(string, value);
+        std::string value{source.substr(start + 1, current - 2 - start)};
+        addToken(STRING, value);
     }
     
 }
@@ -203,18 +196,18 @@ bool match(char expected)
 {
     if(isAtEnd())
     {
-        return false;
+        return FALSE;
     }
     
     else if(source[current] != expected)
     {
-        return false;
+        return FALSE;
     }
     
     else 
     {
         current++;
-        return true;
+        return TRUE;
     }
 }
 
@@ -277,19 +270,35 @@ char advance()
     return source[current++];
 }
 
-// void addToken(TokenType type)
-// {
-//     addToken(type, null);
-// }
+ void addToken(TokenType type)
+ {
+     addToken(type, nullptr);
+ }
 
-// void addToken(TokenType type, Object literal)
-// {
-//     string text;
-//     text = source.substr(start, current);
-//     tokens.add(new Token(type, text, literal, line));
-// }
+ void addToken(TokenType type, any literal)
+ {
+     std::string text{source.substr(start, current - start)};
+
+    tokens.emplace_back(type, move(text), move(literal),line);
+ }
 
 };
 
-
+const std::map<std::string, TokenType> Scanner::keywords =
+{
+  {"and",    TokenType::AND},
+  {"class",  TokenType::CLASS},
+  {"else",   TokenType::ELSE},
+  {"false",  TokenType::FALSE},
+  {"for",    TokenType::FOR},
+  {"fun",    TokenType::FUN},
+  {"if",     TokenType::IF},
+  {"NULL",   TokenType::NULL},
+  {"or",     TokenType::OR},
+  {"print",  TokenType::PRINT},
+  {"return", TokenType::RETURN},
+  {"this",   TokenType::THIS},
+  {"true",   TokenType::TRUE},
+  {"while",  TokenType::WHILE},
+};
 
