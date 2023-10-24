@@ -16,12 +16,12 @@ class Token
     const any literal;
     const int line;
 
-    Token(TokenType type, string lexeme, any literal, int line)
-    : type{type}, lexeme{move(lexeme)}, literal{move(literal)}, line{line}
+    Token(TokenType type, std::string lexeme, std::any literal, int line)
+    : type{type}, lexeme{std::move(lexeme)}, literal{std::move(literal)}, line{line}
     {}
    
-    string toString() const{
-        string literal_text;
+    std::string toString() const{
+        std::string literal_text;
 
         switch (type)
         {
@@ -30,11 +30,11 @@ class Token
             break;
 
             case(NUMBER):
-            literal_text = to_string(any_cast<double>(literal));
+            literal_text = std::to_string(std::any_cast<double>(literal));
             break;
 
             case(STRING):
-            literal_text = any_cast<string>(literal);
+            literal_text = std::any_cast<std::string>(literal);
             break;
 
             case(TRUE):
