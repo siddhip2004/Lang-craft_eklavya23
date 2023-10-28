@@ -158,6 +158,9 @@ void defineAst(
             "#include \"Token.h\"\n"
             "\n";
 
+  if (baseName == "Stmt") writer << "#include \"Expr.h\"\n";
+  writer << "\n";
+
   // Forward declare the AST classes.
   for (std::string_view type : types) {
     std::string_view className = trim(split(type, ": ")[0]);
@@ -190,10 +193,20 @@ int main(int argc, char* argv[]) {
   }
   std::string outputDir = argv[1];
 
-  defineAst(outputDir, "Expr", {
+defineAst(outputDir, "Expr", {
+    "Assign   : Token name, Expr* value",
     "Binary   : Expr* left, Token op, Expr* right",
     "Grouping : Expr* expression",
     "Literal  : std::any value",
-    "Unary    : Token op, Expr* right"
+    "Unary    : Token op, Expr* right",
+    //"Variable : Token name"
+  });
+
+
+  defineAst(outputDir, "Stmt", {
+    "Block      : std::vector<Stmt*> statements",
+    "Expression : Expr* expression",
+    "Show      : Expr* expression",
+    //"Var        : Token name, Expr* initializer"
   });
 }

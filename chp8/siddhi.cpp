@@ -3,8 +3,8 @@
 #include <iostream>     // std::getline
 #include <string>
 #include <vector>
-#include "AstPrinter.h"
 #include "Error.h"
+#include "interpreter.h"
 #include "parser.h"
 #include "scanner.h"
 
@@ -26,16 +26,21 @@ std::string readFile(std::string_view path) {
   return contents;
 }
 
+Interpreter interpreter{};
+
 void run(std::string_view source) {
   Scanner scanner {source};
   std::vector<Token> tokens = scanner.scanTokens();
   Parser parser{tokens};
-  std::shared_ptr<Expr> expression = parser.parse();
+  std::vector<std::shared_ptr<Stmt>> statements = parser.parse();
 
   // Stop if there was a syntax error.
   if (hadError) return;
 
-  std::cout << AstPrinter{}.print(expression) << "\n";
+  // Stop if there was a resolution error.
+  if (hadError) return;
+
+  interpreter.interpret(statements);
 }
 
 void runFile(std::string_view path) {
@@ -44,6 +49,7 @@ void runFile(std::string_view path) {
 
   // Indicate an error in the exit code.
   if (hadError) std::exit(65);
+  if (hadRuntimeError) std::exit(70);
 }
 
 void runPrompt() {

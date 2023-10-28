@@ -1,16 +1,13 @@
-#include<iostream>
-#include<stdexcept>
+#pragma once
+
+#include <stdexcept>
 #include "Token.h"
 
-using namespace std;
+class RuntimeError: public std::runtime_error {
+public:
+  const Token& token;
 
-class RuntimeError : public runtime_error
-{
-    public:
-    const Token & token;
-
-    RuntimeError(const Token & token, string_view message)
-          : runtime_error{message.data()}, token{token}
-          {}
-    
+  RuntimeError(const Token& token, std::string_view message)
+    : std::runtime_error{message.data()}, token{token}
+  {}
 };

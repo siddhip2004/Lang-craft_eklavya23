@@ -31,11 +31,28 @@ clean:
 
 -include $(DEPS)
 
-
-.PHONY: test-parsing
-test-parsing:
+define make_test
+.PHONY: $(1)
+$(1):
 	@make psiddhi >/dev/null
-	@echo "testing psiddhi with test-parsing.siddhi ..."
-	@./psiddhi tests/test-parsing.siddhi | diff -u --color tests/test-parsing.siddhi.expected -;
+	@echo "testing psiddhi with $(1).siddhi ..."
+	@./psiddhi tests/$(1).siddhi | diff -u --color tests/$(1).siddhi.expected -;
+endef
 
 
+TESTS = \
+test-statements \
+test-statements2 \
+test-statements3 \
+test-statements4 \
+test-statements5 \
+test-statements6 \
+
+$(foreach test, $(TESTS), $(eval $(call make_test,$(test))))
+
+
+.PHONY: test-all
+test-all:
+	@for test in $(TESTS); do \
+		make -s $$test; \
+	done

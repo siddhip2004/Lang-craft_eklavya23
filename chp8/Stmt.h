@@ -10,13 +10,13 @@
 
 struct Block;
 struct Expression;
-struct Print;
+struct Show;
 struct Var;
 
 struct StmtVisitor {
   virtual std::any visitBlockStmt(std::shared_ptr<Block> stmt) = 0;
   virtual std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) = 0;
-  virtual std::any visitPrintStmt(std::shared_ptr<Print> stmt) = 0;
+  virtual std::any visitShowStmt(std::shared_ptr<Show> stmt) = 0;
   virtual std::any visitVarStmt(std::shared_ptr<Var> stmt) = 0;
   virtual ~StmtVisitor() = default;
 };
@@ -49,13 +49,13 @@ struct Expression: Stmt, public std::enable_shared_from_this<Expression> {
   const std::shared_ptr<Expr> expression;
 };
 
-struct Print: Stmt, public std::enable_shared_from_this<Print> {
-  Print(std::shared_ptr<Expr> expression)
+struct Show: Stmt, public std::enable_shared_from_this<Show> {
+  Show(std::shared_ptr<Expr> expression)
     : expression{std::move(expression)}
   {}
 
   std::any accept(StmtVisitor& visitor) override {
-    return visitor.visitPrintStmt(shared_from_this());
+    return visitor.visitShowStmt(shared_from_this());
   }
 
   const std::shared_ptr<Expr> expression;
