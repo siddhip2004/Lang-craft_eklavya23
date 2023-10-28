@@ -227,7 +227,7 @@ private:
   }
 
   std::string stringify(const std::any& object) {
-    if (object.type() == typeid(nullptr)) return "nil";
+    if (object.type() == typeid(nullptr)) return "NIL";
 
     if (object.type() == typeid(double)) {
       std::string text = std::to_string(

@@ -48,9 +48,9 @@ class Parser
     return assignment();
   }
 
-     shared_ptr<Stmt> declaration() {
+     std::shared_ptr<Stmt> declaration() {
     try {
-      if (match(IDENTIFIER)) return Declaration();
+      if (match(VAR)) return varDeclaration();
 
       return statement();
     } catch (ParseError error) {
@@ -89,7 +89,7 @@ class Parser
     return std::make_shared<Show>(value);
   }
 
-  shared_ptr<Stmt> Declaration() {
+  std::shared_ptr<Stmt> varDeclaration() {
     Token name = consume(IDENTIFIER, "Expect variable name.");
 
     std::shared_ptr<Expr> initializer = nullptr;

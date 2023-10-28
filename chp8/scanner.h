@@ -265,6 +265,7 @@ const std::map<std::string, TokenType> Scanner::keywords =
   {"show",  TokenType::SHOW},
   {"this",   TokenType::THIS},
   {"t",      TokenType::TRUE},
+  {"var",    TokenType::VAR},
   {"while",  TokenType::WHILE},
   
 };

@@ -1,0 +1,4 @@
+var a = "before"
+show a ^ "before".
+var a = "after"
+show a ^ "after".

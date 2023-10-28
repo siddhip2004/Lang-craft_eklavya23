@@ -20,7 +20,7 @@ generate_ast: GenerateAst.o
 	@$(COMPILE) $< -o $@
 
 
-Expr.h: generate_ast
+Expr.h Stmt.h: generate_ast
 	@./generate_ast .
 
 

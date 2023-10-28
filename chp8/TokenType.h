@@ -18,7 +18,7 @@ enum TokenType {
 
   // Keywords.
   BOOL,CLASS, ELSE, FALSE,  FOR, IF, NIL, 
-  READ, RETURN, SHOW, THIS, TRUE,  WHILE ,
+  READ, RETURN, SHOW, THIS, TRUE,VAR,  WHILE ,
 
   eof
 };
@@ -33,7 +33,7 @@ std::string toString(TokenType type) {
     "LESS", "LESS_EQUAL","OR",
     "IDENTIFIER", "STRING", "NUMBER",
     "BOOL", "CLASS", "ELSE", "FALSE","FOR", "IF", "NIL",
-    "READ", "RETURN",  "SHOW", "THIS", "TRUE",  "WHILE", 
+    "READ", "RETURN",  "SHOW", "THIS", "TRUE", "VAR", "WHILE", 
     
     "eof"
   };
