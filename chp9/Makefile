@@ -8,8 +8,8 @@ SRCS     := AstPrinterDriver.cpp GenerateAst.cpp siddhi.cpp
 DEPS     := $(SRCS:.cpp=.d)
 
 
-psiddhi: siddhi.o
-	@$(COMPILE) $< -o $@
+psiddhi: Expr.h Stmt.h siddhi.o
+	@$(COMPILE) siddhi.o -o $@
 
 
 ast_printer: Expr.h AstPrinterDriver.o
@@ -47,6 +47,12 @@ test-statements3 \
 test-statements4 \
 test-statements5 \
 test-statements6 \
+test-control-flow \
+test-control-flow2 \
+test-control-flow3 \
+test-control-flow4 \
+test-control-flow5 \
+test-control-flow6 \
 
 $(foreach test, $(TESTS), $(eval $(call make_test,$(test))))
 

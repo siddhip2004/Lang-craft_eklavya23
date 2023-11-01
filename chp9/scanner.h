@@ -45,8 +45,10 @@ private:
       case '.': addToken(DOT); break;
       case '-': addToken(MINUS); break;
       case '+': addToken(PLUS); break;
-      //case ';': addToken(SEMICOLON); break;
+      case ';': addToken(SEMICOLON); break;
       case '*': addToken(STAR); break;
+      case '|': addToken(OR); break;
+      case '&': addToken(AND); break;
       case '^': 
        
         while(peek()!= '\n' && !isAtEnd()) advance();
@@ -64,7 +66,7 @@ private:
       case '>':
         addToken(match('=') ? GREATER_EQUAL : GREATER);
         break;
-      case '&':
+      /*case '&':
         if(match('&'))
         {
             addToken(AND);
@@ -89,7 +91,7 @@ private:
             break;
         }
         break;
-
+      */
       case '/':  
        if(match('/'))
        {
@@ -255,6 +257,7 @@ const std::map<std::string, TokenType> Scanner::keywords =
 {
   {"bool",   TokenType::BOOL},
   {"class",  TokenType::CLASS},
+  {"do",    TokenType::DO},
   {"else",   TokenType::ELSE},
   {"f",      TokenType::FALSE},
   {"for",    TokenType::FOR},

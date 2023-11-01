@@ -69,6 +69,22 @@ public:
     return {};
   }
 
+  std::any visitIfStmt(std::shared_ptr<If> stmt) override {
+    if (isTruthy(evaluate(stmt->condition))) {
+      execute(stmt->thenBranch);
+    } else if (stmt->elseBranch != nullptr) {
+      execute(stmt->elseBranch);
+    }
+    return {};
+  }
+
+  std::any visitWhileStmt(std::shared_ptr<While> stmt) override {
+    while (isTruthy(evaluate(stmt->condition))) {
+      execute(stmt->body);
+    }
+    return {};
+  }
+
   std::any visitShowStmt(std::shared_ptr<Show> stmt) override {
     std::any value = evaluate(stmt->expression);
     std::cout << stringify(value) << "\n";
@@ -172,6 +188,18 @@ public:
 
     
     return {};
+  }
+
+  std::any visitLogicalExpr(std::shared_ptr<Logical> expr) override {
+    std::any left = evaluate(expr->left);
+
+    if (expr->op.type == OR) {
+      if (isTruthy(left)) return left;
+    } else {
+      if (!isTruthy(left)) return left;
+    }
+
+    return evaluate(expr->right);
   }
 
   std::any visitVariableExpr(

@@ -5,11 +5,11 @@
 #include <sstream>
 #include <string>
 #include <string_view>
-#include <utility>      // std::move
+#include <utility>         // std::move
 #include <vector>
 
-std::vector<std::string_view> split(std::string_view str, std::string_view delim) 
-{
+std::vector<std::string_view> split(std::string_view str,
+                                    std::string_view delim) {
   std::vector<std::string_view> out;
 
   std::string_view::size_type start = 0;
@@ -24,7 +24,7 @@ std::vector<std::string_view> split(std::string_view str, std::string_view delim
   }
 
   out.push_back(str.substr(start, end - start));
-
+  
   return out;
 }
 
@@ -171,7 +171,13 @@ void defineAst(
   writer << "\n";
   defineVisitor(writer, baseName, types);
 
-  
+  // The base class.
+  // C++ does not allow virtual methods to be templated. That means
+  // multiple accept signatures are out -- at least if we don't want
+  // to over complicate things. An alternative is to use std::any,
+  // which holds values of any type in a type-safe way. Classes
+  // implementing the base class are then required to cast the return
+  // value to the expected type inside their member functions.
   writer << "\n"
             "struct " << baseName << " {\n"
             "  virtual std::any accept(" << baseName <<
@@ -193,20 +199,23 @@ int main(int argc, char* argv[]) {
   }
   std::string outputDir = argv[1];
 
-defineAst(outputDir, "Expr", {
+  defineAst(outputDir, "Expr", {
     "Assign   : Token name, Expr* value",
     "Binary   : Expr* left, Token op, Expr* right",
     "Grouping : Expr* expression",
     "Literal  : std::any value",
+    "Logical  : Expr* left, Token op, Expr* right",
     "Unary    : Token op, Expr* right",
-    //"Variable : Token name"
+    "Variable : Token name"
   });
-
 
   defineAst(outputDir, "Stmt", {
     "Block      : std::vector<Stmt*> statements",
     "Expression : Expr* expression",
-    "Show      : Expr* expression",
-    //"Var        : Token name, Expr* initializer"
+    "If         : Expr* condition, Stmt* thenBranch,"
+                " Stmt* elseBranch",
+    "Print      : Expr* expression",
+    "Var        : Token name, Expr* initializer",
+    "While      : Expr* condition, Stmt* body"
   });
 }

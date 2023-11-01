@@ -35,7 +35,6 @@ class Parser
     vector<std::shared_ptr<Stmt>> parse() {
     std::vector<std::shared_ptr<Stmt>> statements;
     while (!isAtEnd()) {
-      // statements.push_back(statement());
       statements.push_back(declaration());
     }
 
@@ -59,17 +58,60 @@ class Parser
     }
   }
 
-  shared_ptr<Stmt> expressionStatement() {
-    std::shared_ptr<Expr> expr = expression();
-    return std::make_shared<Expression>(expr);
-  }
-
-
-     shared_ptr<Stmt> statement() {
+  shared_ptr<Stmt> statement() {
+    if (match(FOR)) return forStatement();
+    if (match(IF)) return ifStatement();
     if (match(SHOW)) return printStatement();
+    if (match(WHILE)) return whileStatement();
     if (match(LEFT_BRACE)) return std::make_shared<Block>(block());
 
     return expressionStatement();
+  }
+
+
+  shared_ptr<Stmt> forStatement() {
+    consume(LEFT_PAREN, "Expect '(' after 'for'.");
+
+    std::shared_ptr<Stmt> initializer;
+    if (match(SEMICOLON)) {
+      initializer = nullptr;
+    } else if (match(VAR)) {
+      initializer = varDeclaration();
+    } else {
+      initializer = expressionStatement();
+    }
+
+    std::shared_ptr<Expr> condition = nullptr;
+    if (!check(SEMICOLON)) {
+      condition = expression();
+    }
+    consume(SEMICOLON, "Expect ';' after loop condition.");
+
+    std::shared_ptr<Expr> increment = nullptr;
+    if (!check(RIGHT_PAREN)) {
+      increment = expression();
+    }
+    consume(RIGHT_PAREN, "Expect ')' after for clauses.");
+    std::shared_ptr<Stmt> body = statement();
+
+    if (increment != nullptr) {
+      body = std::make_shared<Block>(
+          std::vector<std::shared_ptr<Stmt>>{
+              body,
+              std::make_shared<Expression>(increment)});
+    }
+
+    if (condition == nullptr) {
+      condition = std::make_shared<Literal>(true);
+    }
+    body = std::make_shared<While>(condition, body);
+
+    if (initializer != nullptr) {
+      body = std::make_shared<Block>(
+          std::vector<std::shared_ptr<Stmt>>{initializer, body});
+    }
+
+    return body;
   }
 
   vector<std::shared_ptr<Stmt>> block() {
@@ -117,7 +159,62 @@ class Parser
 
     return expr;
   }
+
   
+
+  shared_ptr<Stmt> ifStatement() {
+    consume(LEFT_PAREN, "Expect '(' after 'if'.");
+    std::shared_ptr<Expr> condition = expression();
+    consume(RIGHT_PAREN, "Expect ')' after if condition.");
+
+    std::shared_ptr<Stmt> thenBranch = statement();
+    std::shared_ptr<Stmt> elseBranch = nullptr;
+    if (match(ELSE)) {
+      elseBranch = statement();
+    }
+
+    return std::make_shared<If>(condition, thenBranch, elseBranch);
+  }
+
+  shared_ptr<Stmt> whileStatement() {
+    consume(LEFT_PAREN, "Expect '(' after 'while'.");
+    std::shared_ptr<Expr> condition = expression();
+    consume(RIGHT_PAREN, "Expect ')' after condition.");
+    std::shared_ptr<Stmt> body = statement();
+
+    return std::make_shared<While>(condition, body);
+  }
+
+  shared_ptr<Stmt> expressionStatement() {
+    std::shared_ptr<Expr> expr = expression();
+    return std::make_shared<Expression>(expr);
+  }
+
+  shared_ptr<Expr> orExpression() {
+    std::shared_ptr<Expr> expr = andExpression();
+
+    while (match(OR)) {
+      Token op = previous();
+      std::shared_ptr<Expr> right = andExpression();
+      expr = std::make_shared<Logical>(expr, std::move(op), right);
+    }
+
+    return expr;
+  }
+
+
+  shared_ptr<Expr> andExpression() {
+    std::shared_ptr<Expr> expr = equality();
+
+    while (match(AND)) {
+      Token op = previous();
+      std::shared_ptr<Expr> right = equality();
+      expr = std::make_shared<Logical>(expr, std::move(op), right);
+    }
+
+    return expr;
+  }
+
      
       shared_ptr<Expr> equality()
       {
@@ -249,12 +346,13 @@ class Parser
   void synchronize() {
     advance();
 
-    
-
+    while (!isAtEnd()) {
+      //if (previous().type == SEMICOLON) return;
       switch (peek().type) {
         case CLASS:
         case READ:
         case FOR:
+        case VAR:
         case IF:
         case WHILE:
         case SHOW:
@@ -264,4 +362,5 @@ class Parser
 
       advance();
     }
+  }
   };
