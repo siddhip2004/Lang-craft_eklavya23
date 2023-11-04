@@ -69,7 +69,7 @@ class Parser
   }
 
 
-  shared_ptr<Stmt> forStatement() {
+  std::shared_ptr<Stmt> forStatement() {
     consume(LEFT_PAREN, "Expect '(' after 'for'.");
 
     std::shared_ptr<Stmt> initializer;

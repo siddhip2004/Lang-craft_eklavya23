@@ -214,7 +214,7 @@ int main(int argc, char* argv[]) {
     "Expression : Expr* expression",
     "If         : Expr* condition, Stmt* thenBranch,"
                 " Stmt* elseBranch",
-    "Print      : Expr* expression",
+    "Show       : Expr* expression",
     "Var        : Token name, Expr* initializer",
     "While      : Expr* condition, Stmt* body"
   });

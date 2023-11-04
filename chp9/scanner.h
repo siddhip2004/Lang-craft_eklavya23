@@ -47,8 +47,8 @@ private:
       case '+': addToken(PLUS); break;
       case ';': addToken(SEMICOLON); break;
       case '*': addToken(STAR); break;
-      case '|': addToken(OR); break;
-      case '&': addToken(AND); break;
+      //case '|': addToken(OR); break;
+      //case '&': addToken(AND); break;
       case '^': 
        
         while(peek()!= '\n' && !isAtEnd()) advance();
@@ -66,7 +66,7 @@ private:
       case '>':
         addToken(match('=') ? GREATER_EQUAL : GREATER);
         break;
-      /*case '&':
+      case '&':
         if(match('&'))
         {
             addToken(AND);
@@ -91,7 +91,7 @@ private:
             break;
         }
         break;
-      */
+      
       case '/':  
        if(match('/'))
        {

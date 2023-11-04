@@ -1,0 +1,4 @@
+var a = 10
+show a 
+a = 2
+show a 
