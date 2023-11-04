@@ -44,7 +44,9 @@ It involves the following stages :
 - These lexemes pass through the lexer and it gives us tokens.
 - These tokens are then sent forward to use in parsing. 
 
-- These tokens are defined in [TokenType.h](https://github.com/siddhip2004/Lang-craft_eklavya23/blob/siddhi/chp9/TokenType.h),
+- These tokens are defined in [TokenType.h](https://github.com/siddhip2004/Lang-craft_eklavya23/blob/siddhi/chp9/TokenType.h).
+
+![LEXER](images/lexer.png)
 
 ### Significance of Lexical Analysis
 The lexical analyzer is responsible for breaking these syntaxes into a series of tokens, by removing whitespace in the source code. If the lexical analyzer gets any invalid token, it generates an error. The stream of character is read by it and it seeks the legal tokens, and then the data is passed to the syntax analyzer, when it is asked for.
@@ -59,6 +61,8 @@ The lexical analyzer is responsible for breaking these syntaxes into a series of
 - Thus, we can say, AST is a compact version of the parse tree.
 - In parse tree, after getting rid of the extra comment or other syntactic stuff is present it is passed through AST.
 >So the conversion of the tokens to AST is called Parsing.
+
+![PARSER](images/parser.png)
 - The Parser is defined in [Parser.h](https://github.com/siddhip2004/Lang-craft_eklavya23/blob/siddhi/chp9/parser.h).
 
 
@@ -70,6 +74,8 @@ The lexical analyzer is responsible for breaking these syntaxes into a series of
 >AST is what represents our language in memory, the program for generating an AST is given in  [GenerateAst.cpp](https://github.com/siddhip2004/Lang-craft_eklavya23/blob/siddhi/chp9/GenerateAst.cpp)
 - The next step is to execute this syntax tree by recursively transversing it. 
 > Here we implement the evaluation logic for each kind of expression that we can parse - [Interpreter.h](https://github.com/siddhip2004/Lang-craft_eklavya23/blob/siddhi/chp9/interpreter.h)
+
+![INTERPRETER](images/interpreter.png)
 
 ## Language Reference
 Refer to this language reference - [CyPy](https://github.com/siddhip2004/Lang-craft_eklavya23/blob/nishat/Syntax.pdf)
