@@ -1,0 +1,11 @@
+var a=22
+
+if(a<18)
+{
+    show "Not eligible for party"
+}
+
+else
+{
+    show "Eligible for party"
+}

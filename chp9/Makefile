@@ -48,9 +48,9 @@ test-statements4 \
 test-statements5 \
 test-statements6 \
 test-control-flow \
-test-control-flow2 \
-test-control-flow3 \
-test-control-flow4 \
+test-for \
+test-if \
+test-while \
 test-control-flow5 \
 test-control-flow6 \
 
