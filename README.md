@@ -88,7 +88,7 @@ Here we will use MakeFile to run and compile our programs more efficiently. It d
 ```
 git clone //
 ```
-- Run **make** or **make jlox** to compile the program.
+- Run **make** or **make cypy** to compile the program.
 
 - Run **make generate_ast** to compile GenerateAst.cpp.
 
