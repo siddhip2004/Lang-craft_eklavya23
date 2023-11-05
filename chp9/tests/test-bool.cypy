@@ -1,0 +1,12 @@
+var a = f;
+show a 
+
+if(a==1)
+{
+    show "1 stands for true"
+}
+
+else 
+{
+    show "0 stands for false"
+}
