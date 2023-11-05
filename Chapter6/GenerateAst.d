@@ -1,1 +1,0 @@
-GenerateAst.o: GenerateAst.cpp
