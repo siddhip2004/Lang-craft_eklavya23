@@ -4,6 +4,8 @@
 
 - It will involve defining the syntax of the language, implementing a lexer, developing a parser to construct an AST, and building a tree-walk interpreter to execute the code written in the custom language.
 
+- This Repo is inspired from [Crafting Interpreters](https://craftinginterpreters.com/) and all codes have been implemented chapterwise as given in the book.
+
 ### What is an **INTERPRETER** ?
 - An interpreter is a program that directly executes the instructions in a high-level language, without converting it into machine code.
 - It does not generate any intermediate object code. Hence it is memory efficient.
@@ -86,7 +88,8 @@ Here we will use MakeFile to run and compile our programs more efficiently. It d
 ----
 ## Build
 ```
-git clone //
+git clone https://github.com/siddhip2004/Lang-craft_eklavya23.git
+cd Chapter9
 ```
 - Run **make** or **make cypy** to compile the program.
 
@@ -110,7 +113,6 @@ git clone //
 ## Acknowledgements and Resources
 * Thanks to [SRA-VJTI](https://sravjti.in/) for providing this wonderful opportunity in Eklavya 2023. 
 * Special thanks to our mentor [Khushi Balia](https://github.com/khushi-Balia/), [Lakshaya Singhal](https://github.com/LakshayaSinghal) and Prit Kanadiya for their guidance throughout this project.
-- [Crafting Interpreters](https://craftinginterpreters.com/)
 - [How to use Markdown file](https://youtu.be/bpdvNwvEeSE)
 - [Github Tutorial](https://youtu.be/uaeKhfhYE0U)
 - [Flex and Bison Calculator](https://github.com/siddhip2004/Lang-craft_eklavya23/tree/nishat/Flex-Bison)
